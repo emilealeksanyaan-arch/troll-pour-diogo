@@ -7,32 +7,13 @@
     body {
       margin: 0;
       background: black;
-      color: #00ff00;
-      font-family: monospace;
-      overflow: hidden;
-    }
-
-    #matrix {
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      pointer-events: none;
-      opacity: 0.3;
-    }
-
-    #log {
-      padding: 20px;
-      font-size: 18px;
-      white-space: pre-line;
+      color: white;
+      font-family: Arial, sans-serif;
+      text-align: center;
+      padding-top: 100px;
     }
 
     #startBtn {
-      position: absolute;
-      bottom: 40px;
-      left: 50%;
-      transform: translateX(-50%);
       padding: 15px 30px;
       font-size: 20px;
       cursor: pointer;
@@ -69,69 +50,18 @@
 
 <body>
 
-<canvas id="matrix"></canvas>
-
-<div id="log">Initialisation du système…</div>
-
+<h1>Initialisation du système…</h1>
 <button id="startBtn">Activer le protocole</button>
 
 <div id="redScreen"></div>
 
 <script>
-  // Effet Matrix
-  const canvas = document.getElementById("matrix");
-  const ctx = canvas.getContext("2d");
-  canvas.height = window.innerHeight;
-  canvas.width = window.innerWidth;
-
-  const letters = "01";
-  const fontSize = 16;
-  const columns = canvas.width / fontSize;
-  const drops = Array(Math.floor(columns)).fill(1);
-
-  function drawMatrix() {
-    ctx.fillStyle = "rgba(0, 0, 0, 0.05)";
-    ctx.fillRect(0, 0, canvas.width, canvas.height);
-
-    ctx.fillStyle = "#0F0";
-    ctx.font = fontSize + "px monospace";
-
-    drops.forEach((y, i) => {
-      const text = letters[Math.floor(Math.random() * letters.length)];
-      ctx.fillText(text, i * fontSize, y * fontSize);
-
-      if (y * fontSize > canvas.height && Math.random() > 0.975) {
-        drops[i] = 0;
-      }
-      drops[i]++;
-    });
-  }
-
-  setInterval(drawMatrix, 50);
-
-  // Troll principal
-  const log = document.getElementById("log");
-  const redScreen = document.getElementById("redScreen");
   const startBtn = document.getElementById("startBtn");
+  const redScreen = document.getElementById("redScreen");
 
   startBtn.addEventListener("click", () => {
     startBtn.style.display = "none";
-    log.innerHTML = "Analyse du système en cours...\nChargement des modules...\nConnexion aux serveurs sécurisés...\n";
 
-    setTimeout(() => {
-      log.innerHTML += "\n⚠️ Anomalie détectée...";
-    }, 1500);
-
-    setTimeout(() => {
-      log.innerHTML += "\n⚠️ Protocole d'urgence activé.";
-    }, 3000);
-
-    setTimeout(() => {
-      lancerTroll();
-    }, 4500);
-  });
-
-  function lancerTroll() {
     let countdown = 3;
 
     redScreen.style.opacity = 1;
@@ -153,7 +83,7 @@
           "le coupable était… un pigeon 🕊😶";
       }
     }, 1000);
-  }
+  });
 </script>
 
 </body>
