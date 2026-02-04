@@ -17,13 +17,14 @@
       top: 20px;
       left: 20px;
       color: #0F0;
-      font-size: 22px;
+      font-size: 20px;
       background: rgba(0,0,0,0.6);
-      padding: 10px 15px;
+      padding: 15px;
       border: 1px solid #0F0;
-      text-shadow: 0 0 5px #0F0;
       width: 600px;
       line-height: 1.4;
+      height: auto;
+      min-height: 120px;
     }
 
     #fake-button {
@@ -86,9 +87,7 @@
   const columns = canvas.width / fontSize;
 
   const drops = [];
-  for (let i = 0; i < columns; i++) {
-    drops[i] = 1;
-  }
+  for (let i = 0; i < columns; i++) drops[i] = 1;
 
   function drawMatrix() {
     ctx.fillStyle = "rgba(0, 0, 0, 0.05)";
@@ -101,9 +100,7 @@
       const text = letters[Math.floor(Math.random() * letters.length)];
       ctx.fillText(text, i * fontSize, drops[i] * fontSize);
 
-      if (drops[i] * fontSize > canvas.height && Math.random() > 0.975) {
-        drops[i] = 0;
-      }
+      if (drops[i] * fontSize > canvas.height && Math.random() > 0.975) drops[i] = 0;
 
       drops[i]++;
     }
@@ -111,9 +108,9 @@
 
   setInterval(drawMatrix, 50);
 
-  // --- FAUX POURCENTAGE + FAUX LOGS ---
-  let percent = 0;
+  // --- LOGS + POURCENTAGE ---
   const virusMsg = document.getElementById("virus-msg");
+  let percent = 0;
 
   const logs = [
     "Analyse du système...",
@@ -131,14 +128,13 @@
   let logIndex = 0;
 
   const interval = setInterval(() => {
-    percent += Math.floor(Math.random() * 8) + 1;
+    percent += Math.floor(Math.random() * 6) + 3;
     if (percent > 100) percent = 100;
 
-    let log = logs[logIndex];
     if (logIndex < logs.length - 1) logIndex++;
 
     virusMsg.innerHTML =
-      log + "<br><br>" +
+      logs[logIndex] + "<br><br>" +
       "Progression : " + percent + "%";
 
     if (percent === 100) {
@@ -147,9 +143,9 @@
         "Virus installé.<br>" +
         "En attente d’activation finale...";
     }
-  }, 700);
+  }, 900);
 
-  // --- BOUTON PIÉGÉ + ÉCRAN ROUGE FINAL ---
+  // --- BOUTON PIÉGÉ ---
   const fakeButton = document.getElementById("fake-button");
   const redScreen = document.getElementById("red-screen");
 
