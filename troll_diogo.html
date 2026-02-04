@@ -162,27 +162,28 @@
   const fakeButton = document.getElementById("fake-button");
   const redScreen = document.getElementById("red-screen");
 
-  fakeButton.addEventListener("click", () => {
-    let countdown = 5;
-    redScreen.style.opacity = 1;
-    redScreen.classList.add("shake");
-    redScreen.innerHTML = "Activation finale dans : " + countdown + "…";
+fakeButton.addEventListener("click", () => {
+  let countdown = 3; // départ à 3
+  redScreen.style.opacity = 1;
+  redScreen.classList.add("shake");
+  redScreen.innerHTML = "Activation finale dans : " + countdown + "…";
 
-    const cdInterval = setInterval(() => {
-      countdown--;
-      if (countdown > 0) {
-        redScreen.innerHTML = "Activation finale dans : " + countdown + "…";
-      } else {
-        clearInterval(cdInterval);
-        redScreen.classList.remove("shake");
-        redScreen.innerHTML =
-          "T’es foutu.<br>" +
-          "Diogo, tu ne peux plus rien faire.<br>" +
-          "Système verrouillé.<br>" +
-          "Bonne chance.";
-      }
-    }, 1000);
-  });
+  const cdInterval = setInterval(() => {
+    countdown--;
+    if (countdown > 0) {
+      redScreen.innerHTML = "Activation finale dans : " + countdown + "…";
+    } else {
+      clearInterval(cdInterval);
+      redScreen.classList.remove("shake");
+      redScreen.innerHTML =
+        "T’es foutu.<br>" +
+        "Diogo, tu ne peux plus rien faire.<br>" +
+        "Système verrouillé.<br>" +
+        "Bonne chance.";
+    }
+  }, 1000);
+});
+
 </script>
 
 </body>
