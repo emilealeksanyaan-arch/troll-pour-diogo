@@ -53,6 +53,8 @@
       opacity: 0;
       pointer-events: none;
       transition: opacity 1s;
+      text-align: center;
+      padding: 20px;
     }
 
     canvas {
@@ -65,7 +67,7 @@
 
 <div id="virus-msg">Initialisation...</div>
 <button id="fake-button">Arrêter le virus</button>
-<div id="red-screen">DIOGO, C'EST TROP TARD.</div>
+<div id="red-screen"></div>
 
 <canvas id="matrix"></canvas>
 
@@ -123,14 +125,19 @@
     }
   }, 500);
 
-  // --- BOUTON PIÉGÉ ---
+  // --- BOUTON PIÉGÉ + ÉCRAN ROUGE FINAL ---
   const fakeButton = document.getElementById("fake-button");
   const redScreen = document.getElementById("red-screen");
 
   fakeButton.addEventListener("click", () => {
     redScreen.style.opacity = 1;
+
     setTimeout(() => {
-      redScreen.textContent = "DIOGO, TU NE PEUX PLUS RIEN FAIRE.";
+      redScreen.innerHTML =
+        "T’es foutu.<br>" +
+        "Diogo, tu ne peux plus rien faire.<br>" +
+        "Système verrouillé.<br>" +
+        "Bonne chance.";
     }, 1500);
   });
 </script>
