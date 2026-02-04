@@ -23,7 +23,6 @@
       border: 1px solid #0F0;
       width: 600px;
       line-height: 1.4;
-      height: auto;
       min-height: 120px;
     }
 
@@ -55,9 +54,21 @@
       align-items: center;
       opacity: 0;
       pointer-events: none;
-      transition: opacity 1s;
+      transition: opacity 0.8s;
       text-align: center;
       padding: 20px;
+    }
+
+    .shake {
+      animation: shake 0.3s infinite;
+    }
+
+    @keyframes shake {
+      0% { transform: translate(0, 0); }
+      25% { transform: translate(-5px, 3px); }
+      50% { transform: translate(5px, -3px); }
+      75% { transform: translate(-4px, -2px); }
+      100% { transform: translate(0, 0); }
     }
 
     canvas {
@@ -100,7 +111,9 @@
       const text = letters[Math.floor(Math.random() * letters.length)];
       ctx.fillText(text, i * fontSize, drops[i] * fontSize);
 
-      if (drops[i] * fontSize > canvas.height && Math.random() > 0.975) drops[i] = 0;
+      if (drops[i] * fontSize > canvas.height && Math.random() > 0.975) {
+        drops[i] = 0;
+      }
 
       drops[i]++;
     }
@@ -145,20 +158,30 @@
     }
   }, 900);
 
-  // --- BOUTON PIÉGÉ ---
+  // --- BOUTON PIÉGÉ + ÉCRAN ROUGE + COMPTE À REBOURS + TREMBLEMENT ---
   const fakeButton = document.getElementById("fake-button");
   const redScreen = document.getElementById("red-screen");
 
   fakeButton.addEventListener("click", () => {
+    let countdown = 5;
     redScreen.style.opacity = 1;
+    redScreen.classList.add("shake");
+    redScreen.innerHTML = "Activation finale dans : " + countdown + "…";
 
-    setTimeout(() => {
-      redScreen.innerHTML =
-        "T’es foutu.<br>" +
-        "Diogo, tu ne peux plus rien faire.<br>" +
-        "Système verrouillé.<br>" +
-        "Bonne chance.";
-    }, 1500);
+    const cdInterval = setInterval(() => {
+      countdown--;
+      if (countdown > 0) {
+        redScreen.innerHTML = "Activation finale dans : " + countdown + "…";
+      } else {
+        clearInterval(cdInterval);
+        redScreen.classList.remove("shake");
+        redScreen.innerHTML =
+          "T’es foutu.<br>" +
+          "Diogo, tu ne peux plus rien faire.<br>" +
+          "Système verrouillé.<br>" +
+          "Bonne chance.";
+      }
+    }, 1000);
   });
 </script>
 
