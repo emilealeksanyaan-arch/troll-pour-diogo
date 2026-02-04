@@ -1,45 +1,44 @@
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-  <meta charset="UTF-8">
-  <title>Troll Diogo</title>
+  <meta charset="UTF-8" />
+  <title>Troll pour Diogo</title>
   <style>
     body {
       margin: 0;
-      overflow: hidden;
       background: black;
-      color: #0F0;
+      color: #00ff00;
       font-family: monospace;
+      overflow: hidden;
     }
 
-    #virus-msg {
-      position: absolute;
-      top: 20px;
-      left: 20px;
-      color: #0F0;
-      font-size: 20px;
-      background: rgba(0,0,0,0.6);
-      padding: 15px;
-      border: 1px solid #0F0;
-      width: 600px;
-      line-height: 1.4;
-      min-height: 120px;
+    #matrix {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      opacity: 0.3;
     }
 
-    #fake-button {
+    #log {
+      padding: 20px;
+      font-size: 18px;
+      white-space: pre-line;
+    }
+
+    #startBtn {
       position: absolute;
       bottom: 40px;
-      left: 40px;
-      padding: 15px 25px;
-      background: #0F0;
-      color: black;
+      left: 50%;
+      transform: translateX(-50%);
+      padding: 15px 30px;
       font-size: 20px;
-      border: none;
       cursor: pointer;
-      font-family: monospace;
     }
 
-    #red-screen {
+    #redScreen {
       position: fixed;
       top: 0;
       left: 0;
@@ -48,57 +47,47 @@
       background: red;
       color: white;
       font-size: 40px;
-      font-family: monospace;
       display: flex;
       justify-content: center;
       align-items: center;
-      opacity: 0;
-      pointer-events: none;
-      transition: opacity 0.8s;
       text-align: center;
-      padding: 20px;
+      opacity: 0;
+      transition: 0.3s;
     }
 
     .shake {
-      animation: shake 0.3s infinite;
+      animation: shake 0.1s infinite;
     }
 
     @keyframes shake {
-      0% { transform: translate(0, 0); }
-      25% { transform: translate(-5px, 3px); }
-      50% { transform: translate(5px, -3px); }
-      75% { transform: translate(-4px, -2px); }
-      100% { transform: translate(0, 0); }
-    }
-
-    canvas {
-      display: block;
+      0% { transform: translate(2px, 2px); }
+      50% { transform: translate(-2px, -2px); }
+      100% { transform: translate(2px, -2px); }
     }
   </style>
 </head>
 
 <body>
 
-<div id="virus-msg">Initialisation...</div>
-<button id="fake-button">Arrêter le virus</button>
-<div id="red-screen"></div>
-
 <canvas id="matrix"></canvas>
 
+<div id="log">Initialisation du système…</div>
+
+<button id="startBtn">Activer le protocole</button>
+
+<div id="redScreen"></div>
+
 <script>
-  // --- EFFET MATRIX ---
+  // Effet Matrix
   const canvas = document.getElementById("matrix");
   const ctx = canvas.getContext("2d");
-
   canvas.height = window.innerHeight;
   canvas.width = window.innerWidth;
 
   const letters = "01";
   const fontSize = 16;
   const columns = canvas.width / fontSize;
-
-  const drops = [];
-  for (let i = 0; i < columns; i++) drops[i] = 1;
+  const drops = Array(Math.floor(columns)).fill(1);
 
   function drawMatrix() {
     ctx.fillStyle = "rgba(0, 0, 0, 0.05)";
@@ -107,81 +96,65 @@
     ctx.fillStyle = "#0F0";
     ctx.font = fontSize + "px monospace";
 
-    for (let i = 0; i < drops.length; i++) {
+    drops.forEach((y, i) => {
       const text = letters[Math.floor(Math.random() * letters.length)];
-      ctx.fillText(text, i * fontSize, drops[i] * fontSize);
+      ctx.fillText(text, i * fontSize, y * fontSize);
 
-      if (drops[i] * fontSize > canvas.height && Math.random() > 0.975) {
+      if (y * fontSize > canvas.height && Math.random() > 0.975) {
         drops[i] = 0;
       }
-
       drops[i]++;
-    }
+    });
   }
 
   setInterval(drawMatrix, 50);
 
-  // --- LOGS + POURCENTAGE ---
-  const virusMsg = document.getElementById("virus-msg");
-  let percent = 0;
+  // Troll principal
+  const log = document.getElementById("log");
+  const redScreen = document.getElementById("redScreen");
+  const startBtn = document.getElementById("startBtn");
 
-  const logs = [
-    "Analyse du système...",
-    "Scan des fichiers sensibles...",
-    "Décryptage des données...",
-    "Accès aux dossiers privés...",
-    "Chargement des modules...",
-    "Connexion au serveur distant...",
-    "Accès refusé... contournement...",
-    "Système compromis...",
-    "Injection du script...",
-    "Préparation de l’activation finale..."
-  ];
+  startBtn.addEventListener("click", () => {
+    startBtn.style.display = "none";
+    log.innerHTML = "Analyse du système en cours...\nChargement des modules...\nConnexion aux serveurs sécurisés...\n";
 
-  let logIndex = 0;
+    setTimeout(() => {
+      log.innerHTML += "\n⚠️ Anomalie détectée...";
+    }, 1500);
 
-  const interval = setInterval(() => {
-    percent += Math.floor(Math.random() * 6) + 3;
-    if (percent > 100) percent = 100;
+    setTimeout(() => {
+      log.innerHTML += "\n⚠️ Protocole d'urgence activé.";
+    }, 3000);
 
-    if (logIndex < logs.length - 1) logIndex++;
+    setTimeout(() => {
+      lancerTroll();
+    }, 4500);
+  });
 
-    virusMsg.innerHTML =
-      logs[logIndex] + "<br><br>" +
-      "Progression : " + percent + "%";
-
-    if (percent === 100) {
-      clearInterval(interval);
-      virusMsg.innerHTML =
-        "Virus installé.<br>" +
-        "En attente d’activation finale...";
-    }
-  }, 900);
-
-  // --- BOUTON PIÉGÉ + COMPTE À REBOURS 3-2-1 + ÉCRAN ROUGE ---
-  const fakeButton = document.getElementById("fake-button");
-  const redScreen = document.getElementById("red-screen");
-
-  fakeButton.addEventListener("click", () => {
+  function lancerTroll() {
     let countdown = 3;
+
     redScreen.style.opacity = 1;
     redScreen.classList.add("shake");
     redScreen.innerHTML = "Activation finale dans : " + countdown + "…";
 
     const cdInterval = setInterval(() => {
       countdown--;
-      if (countdown > 0) {
-    redScreen.innerHTML =
-  "Protocole terminé.<br>" +
-  "Menace neutralisée.<br>" +
-  "Conclusion :<br>" +
-  "le coupable était… un pigeon 🐦💀";
 
+      if (countdown > 0) {
+        redScreen.innerHTML = "Activation finale dans : " + countdown + "…";
+      } else {
+        clearInterval(cdInterval);
+        redScreen.classList.remove("shake");
+        redScreen.innerHTML =
+          "Protocole terminé.<br>" +
+          "Menace neutralisée.<br>" +
+          "Conclusion :<br>" +
+          "le coupable était… un pigeon 🕊😶";
       }
     }, 1000);
-  });
+  }
 </script>
 
 </body>
 </html>
-
