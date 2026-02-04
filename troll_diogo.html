@@ -11,6 +11,19 @@
       color: #0F0;
       font-family: monospace;
     }
+
+    #virus-msg {
+      position: absolute;
+      top: 20px;
+      left: 20px;
+      color: #0F0;
+      font-size: 22px;
+      background: rgba(0,0,0,0.6);
+      padding: 10px 15px;
+      border: 1px solid #0F0;
+      text-shadow: 0 0 5px #0F0;
+    }
+
     canvas {
       display: block;
     }
@@ -19,9 +32,11 @@
 
 <body>
 
+<div id="virus-msg">Initialisation...</div>
 <canvas id="matrix"></canvas>
 
 <script>
+  // --- EFFET MATRIX ---
   const canvas = document.getElementById("matrix");
   const ctx = canvas.getContext("2d");
 
@@ -57,19 +72,23 @@
   }
 
   setInterval(drawMatrix, 50);
-</script>
 
-<!-- LECTURE AUTOMATIQUE SI AUTORISÉE -->
-<audio id="glitch" autoplay>
-  <source src="107369__kumquaticus__wienglitchloop.wav" type="audio/wav">
-</audio>
+  // --- MESSAGES QUI CHANGENT ---
+  const messages = [
+    "Initialisation...",
+    "Connexion au système...",
+    "Analyse des fichiers...",
+    "Importation du virus en cours...",
+    "Injection du module...",
+    "Processus irréversible..."
+  ];
 
-<!-- LECTURE FORCÉE AU PREMIER CLIC -->
-<script>
-  document.addEventListener("click", () => {
-    const audio = document.getElementById("glitch");
-    audio.play();
-  });
+  let index = 0;
+
+  setInterval(() => {
+    index = (index + 1) % messages.length;
+    document.getElementById("virus-msg").textContent = messages[index];
+  }, 1500);
 </script>
 
 </body>
